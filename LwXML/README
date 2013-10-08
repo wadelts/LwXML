@@ -1,0 +1,9 @@
+This project defines an XML document handler for creating, editing and
+saving simple XML messages programmatically.
+
+The entry point for using this project is the XMLDocument class.
+
+See the TestXPathBasedDocument.java JUnit test case for an example of creating an XMLDocument instance.
+
+See the GeMHa project for extensive use of XMLDocument objects, especially GenericMessageHandlerSettings.java,
+ProcessMessageForDb.java and ProcessMessageForDbAction.java.
