@@ -26,7 +26,7 @@ public class TestXPathBasedDocument {
 		}
 		
 		String  messageProcessingClassName = settingsDoc.getValueForTag("Processing/MessageProcessingClassName");
-		assertEquals("Invalid Class Name", "gemha.servers.LwProcessMessageForFile", messageProcessingClassName);
+		assertEquals("Invalid Class Name", "gemha.servers.ProcessMessageForFile", messageProcessingClassName);
 	}
 
 }
