@@ -23,7 +23,7 @@ import java.util.Vector;
   * @version 1.0 20/09/2002
   * @version 1.1 30/09/2013 Refactored to use static creation methods.
   */
-public class LwXMLDocument implements ErrorHandler {
+public class XMLDocument_old2 implements ErrorHandler {
 
 	public static final boolean SCHEMA_VALIDATION_ON = true;	// for use with the validateAgainstSchema attribute below
 	public static final boolean SCHEMA_VALIDATION_OFF = false;	// for use with the validateAgainstSchema attribute below
@@ -41,13 +41,13 @@ public class LwXMLDocument implements ErrorHandler {
 	/**
 	   * Default constructor.
 	   */
-	public LwXMLDocument() {
+	public XMLDocument_old2() {
 	}
 
 	/**
 	   * Default constructor.
 	   */
-	private LwXMLDocument(Document doc) {
+	private XMLDocument_old2(Document doc) {
 		assert doc != null;
 		this.doc = doc;
 	}
@@ -57,10 +57,10 @@ public class LwXMLDocument implements ErrorHandler {
 	  * Create a new document from the XML file supplied.
 	  * @param fileName the path and name of the file containing the XML to be parsed and loaded
 	  * @param validateAgainstSchema if true, validate the XML against a Schema
-	  * @throws LwXMLException
+	  * @throws XMLException
 	  */
-	public static LwXMLDocument createDocFromFile(String fileName, boolean validateAgainstSchema)
-											throws LwXMLException {
+	public static XMLDocument_old2 createDocFromFile(String fileName, boolean validateAgainstSchema)
+											throws XMLException {
 		return createDocFromFile(fileName, validateAgainstSchema, null, null);
 	}
 
@@ -71,14 +71,14 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param validateAgainstSchema if true, validate the XML against a Schema
 	  * @param schemaSourceFile nominate a schema definition file against which to validate, ignored if null
 	  * @param schemaLanguage can overwrite the default Schema language of JAXP_SCHEMA_LANGUAGE below, ignored if null
-	  * @throws LwXMLException
+	  * @throws XMLException
 	  */
-	public static LwXMLDocument createDocFromFile(String fileName, boolean validateAgainstSchema, String schemaSourceFile, String schemaLanguage)
-											throws LwXMLException {
+	public static XMLDocument_old2 createDocFromFile(String fileName, boolean validateAgainstSchema, String schemaSourceFile, String schemaLanguage)
+											throws XMLException {
 
 		checkNullArgument(fileName);
 		
-		LwXMLDocument newLwDoc = null;
+		XMLDocument_old2 newLwDoc = null;
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 
@@ -98,7 +98,7 @@ public class LwXMLDocument implements ErrorHandler {
 				}
 				catch (IllegalArgumentException x) {
 					// Happens if the parser does not support JAXP 1.2
-					throw new LwXMLException("LwXMLDocument.createDocFromFile: Failed to Parse: " + x.getMessage());
+					throw new XMLException("XMLDocument_old2.createDocFromFile: Failed to Parse: " + x.getMessage());
 				}
 			}
 
@@ -107,19 +107,19 @@ public class LwXMLDocument implements ErrorHandler {
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			Document newDoc = docBuilder.parse(fileName);
-			newLwDoc = new LwXMLDocument(newDoc);
+			newLwDoc = new XMLDocument_old2(newDoc);
 
 			// set the current node to the first node
 			newLwDoc.setCurrentNodeToFirstElement();
 		}
 		catch(SAXParseException err) {
-			throw new LwXMLException("LwXMLDocument.createDocFromFile: Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() + "=>" + err.getMessage ());
+			throw new XMLException("XMLDocument_old2.createDocFromFile: Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() + "=>" + err.getMessage ());
 		}
 		catch(SAXException e) {
-			throw new LwXMLException("LwXMLDocument.createDocFromFile: " + e.getMessage());
+			throw new XMLException("XMLDocument_old2.createDocFromFile: " + e.getMessage());
 		}
 		catch (Throwable t) {
-			throw new LwXMLException("LwXMLDocument.createDocFromFile: Unknown exception " + t.getMessage());
+			throw new XMLException("XMLDocument_old2.createDocFromFile: Unknown exception " + t.getMessage());
 		}
 
 		return newLwDoc;
@@ -130,10 +130,10 @@ public class LwXMLDocument implements ErrorHandler {
 	  * Create a new document from the XML text String supplied.
 	  * @param xmlText the actual XML
 	  * @param validateAgainstSchema if true, validate the XML against a Schema
-	  * @throws LwXMLException
+	  * @throws XMLException
 	  */
-	public static LwXMLDocument createDoc(String xmlText, boolean validateAgainstSchema)
-											throws LwXMLException {
+	public static XMLDocument_old2 createDoc(String xmlText, boolean validateAgainstSchema)
+											throws XMLException {
 		return createDoc(xmlText, validateAgainstSchema, null, null);
 	}
 
@@ -144,14 +144,14 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param validateAgainstSchema if true, validate the XML against a Schema
 	  * @param schemaSourceFile nominate a schema definition file against which to validate, ignored if null
 	  * @param schemaLanguage can overwrite the default Schema language of JAXP_SCHEMA_LANGUAGE below, ignored if null
-	  * @throws LwXMLException
+	  * @throws XMLException
 	  */
-	public static LwXMLDocument createDoc(String xmlText, boolean validateAgainstSchema, String schemaSourceFile, String schemaLanguage)
-											throws LwXMLException {
+	public static XMLDocument_old2 createDoc(String xmlText, boolean validateAgainstSchema, String schemaSourceFile, String schemaLanguage)
+											throws XMLException {
 
 		checkNullArgument(xmlText);
 		
-		LwXMLDocument newLwDoc = null;
+		XMLDocument_old2 newLwDoc = null;
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 
@@ -171,7 +171,7 @@ public class LwXMLDocument implements ErrorHandler {
 				}
 				catch (IllegalArgumentException x) {
 					// Happens if the parser does not support JAXP 1.2
-					throw new LwXMLException("LwXMLDocument.createDocFromFile: Failed to Parse: " + x.getMessage());
+					throw new XMLException("XMLDocument_old2.createDocFromFile: Failed to Parse: " + x.getMessage());
 				}
 			}
 
@@ -183,19 +183,19 @@ public class LwXMLDocument implements ErrorHandler {
 			// These chars were in the message of an SQL exception from Derby (primary key error),
 			// on my French laptop. 
 			Document newDoc = docBuilder.parse(new InputSource(new ByteArrayInputStream(xmlText.getBytes("UTF8"))));
-			newLwDoc = new LwXMLDocument(newDoc);
+			newLwDoc = new XMLDocument_old2(newDoc);
 
 			// set the current node to the first node
 			newLwDoc.setCurrentNodeToFirstElement();
 		}
 		catch(SAXParseException err) {
-			throw new LwXMLException("LwXMLDocument.createDoc: Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() + "=>" + err.getMessage ());
+			throw new XMLException("XMLDocument_old2.createDoc: Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() + "=>" + err.getMessage ());
 		}
 		catch(SAXException e) {
-			throw new LwXMLException("LwXMLDocument.createDoc: " + e.getMessage());
+			throw new XMLException("XMLDocument_old2.createDoc: " + e.getMessage());
 		}
 		catch (Throwable t) {
-			throw new LwXMLException("LwXMLDocument.createDoc: Unknown exception " + t.getMessage() + ": xmlText was " + xmlText);
+			throw new XMLException("XMLDocument_old2.createDoc: Unknown exception " + t.getMessage() + ": xmlText was " + xmlText);
 		}
 
 		return newLwDoc;
@@ -426,13 +426,14 @@ public class LwXMLDocument implements ErrorHandler {
 			return null;
 		}
 
-		LwXMLTagValue tv = new LwXMLTagValue(nodePath, textValue);
+		
+		XMLTagValue tv = new XMLTagValue(nodePath, textValue);
 		Node parentNodeOfNewTag = startNode;  // default, for when nodePath just contains a TAG name (i.e no path)
 
 		if (nodePath.contains("/")) { // then is path + tag name, so will make sure parent exists, and set that in parentNodeOfNewTag
 			// get path only
 			String backAlevel = tv.getPathToParent();
-			if ( (parentNodeOfNewTag = findNthElementByPath(startNode, startNode.getNodeName() + "/" + backAlevel, new LwXMLMutableInteger(1))) == null) { // then aggregate does not exist, so create it...
+			if ( (parentNodeOfNewTag = findNthElementByPath(startNode, startNode.getNodeName() + "/" + backAlevel, new XMLMutableInteger(1))) == null) { // then aggregate does not exist, so create it...
 				parentNodeOfNewTag = addElement(startNode, namespaceURI, backAlevel, null);
 			}
 		}
@@ -578,7 +579,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nodePath the fully qualified path to the TAG, e.g. MESSAGE/ORDER/ORDER_NUMBER
 	  * @return the tag's value and it's attribute set in an LwXMLTagValue object
 	  */
-	public LwXMLTagValue getValueForTagPlusAttributes(String nodePath) {
+	public XMLTagValue getValueForTagPlusAttributes(String nodePath) {
 		// Perform the action from the root element, if nodePath begins with a / - signifying "start at root"
 		if (nodePath != null && nodePath.length() > 0 && nodePath.startsWith("/")) {
 			return getValueForTagPlusAttributes(doc.getDocumentElement(), nodePath);
@@ -597,17 +598,17 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nodePath the fully qualified path to the TAG, e.g. MESSAGE/ORDER/ORDER_NUMBER
 	  * @return the tag's value and it's attribute set in an LwXMLTagValue object, null if nothing found
 	  */
-	public LwXMLTagValue getValueForTagPlusAttributes(Node searchNode, String nodePath) {
+	public XMLTagValue getValueForTagPlusAttributes(Node searchNode, String nodePath) {
 		if (searchNode == null || nodePath == null) {
 			return null;
 		}
 
-		Node foundNode = findNthElementByPath(searchNode, nodePath, new LwXMLMutableInteger(1));
+		Node foundNode = findNthElementByPath(searchNode, nodePath, new XMLMutableInteger(1));
 
 		String foundValue = null;
 		Properties attributes = null;
 
-		LwXMLTagValue tv = null;
+		XMLTagValue tv = null;
 
 		if (foundNode != null) {
 			foundValue =  foundNode.getTextContent();
@@ -616,7 +617,7 @@ public class LwXMLDocument implements ErrorHandler {
 
 		// Only create a new LwXMLTagValue if something found...
 		if (foundValue != null || (attributes != null && attributes.size() > 0) ) {
-			tv = new LwXMLTagValue(nodePath, foundValue);
+			tv = new XMLTagValue(nodePath, foundValue);
 			tv.setAttributeSet(attributes);
 		}
 
@@ -653,7 +654,7 @@ public class LwXMLDocument implements ErrorHandler {
 			return null;
 		}
 
-		Node foundNode = findNthElementByPath(searchNode, nodePath, new LwXMLMutableInteger(1));
+		Node foundNode = findNthElementByPath(searchNode, nodePath, new XMLMutableInteger(1));
 
 		String foundValue = null;
 
@@ -671,7 +672,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nodePath the fully qualified path to the TAG, e.g. MESSAGE/ORDER/ORDER_NUMBER
 	  * @return the a Vector of LwXMLTagValue's representing the values for all TAGs matching nodePath, an empty Vector if no matches
 	  */
-	public Vector<LwXMLTagValue> getValuesForTag(String nodePath) {
+	public Vector<XMLTagValue> getValuesForTag(String nodePath) {
 		// Perform the action from the root element, if nodePath begins with a / - signifying "start at root"
 		if (nodePath != null && nodePath.length() > 0 && nodePath.startsWith("/")) {
 			return getValuesForTag(doc.getDocumentElement(), nodePath);
@@ -688,13 +689,13 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nodePath the fully qualified path to the TAG, e.g. MESSAGE/ORDER/ORDER_NUMBER
 	  * @return the a Vector of Strings representing the values for all TAGs matching nodePath, but only for the first set encountered
 	  */
-	public Vector<LwXMLTagValue> getValuesForTag(Node searchNode, String nodePath) {
+	public Vector<XMLTagValue> getValuesForTag(Node searchNode, String nodePath) {
 
 		if (searchNode == null || nodePath == null) {
 			return null;
 		}
 
-		Vector<LwXMLTagValue> values = new Vector<LwXMLTagValue>();
+		Vector<XMLTagValue> values = new Vector<XMLTagValue>();
 
 		getAllElementValuesByPath(searchNode, nodePath, values, nodePath);
 
@@ -707,7 +708,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  *
 	  * @return the a Vector of LwXMLTagValue's representing the values for all child TAGs
 	  */
-	public Vector<LwXMLTagValue> getValuesForTagsChildren() {
+	public Vector<XMLTagValue> getValuesForTagsChildren() {
 		return getValuesForTagsChildren(this.currentNode);
 	}
 
@@ -717,12 +718,12 @@ public class LwXMLDocument implements ErrorHandler {
 	  *
 	  * @return the a Vector of LwXMLTagValue's representing the values for all child TAGs
 	  */
-	public static Vector<LwXMLTagValue> getValuesForTagsChildren(Node parentNode) {
+	public static Vector<XMLTagValue> getValuesForTagsChildren(Node parentNode) {
 		if (parentNode == null) {
 			return null;
 		}
 
-		Vector<LwXMLTagValue> values = new Vector<LwXMLTagValue>();
+		Vector<XMLTagValue> values = new Vector<XMLTagValue>();
 
 
 		if (parentNode.hasChildNodes()) {
@@ -735,7 +736,7 @@ public class LwXMLDocument implements ErrorHandler {
 					String foundValue = childNode.getTextContent();
 					// Only create a new LwXMLTagValue if something found...
 					if (foundValue != null) {
-						LwXMLTagValue tv = new LwXMLTagValue(childNode.getNodeName(), foundValue);
+						XMLTagValue tv = new XMLTagValue(childNode.getNodeName(), foundValue);
 						values.addElement(tv);
 					}
 				}
@@ -812,7 +813,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @return true if found node, otherwise false, and the original currentNode stands
 	  */
 	public boolean setCurrentNodeByPath(String nodePath, int nthOccurance) {
-		LwXMLMutableInteger numOccurrences = new LwXMLMutableInteger(nthOccurance);
+		XMLMutableInteger numOccurrences = new XMLMutableInteger(nthOccurance);
 
 		Node foundNode = findNthElementByPath(nodePath, numOccurrences);
 
@@ -840,7 +841,7 @@ public class LwXMLDocument implements ErrorHandler {
 	public int numNodesByPath(String nodePath) {
 		int aHighNum = 10000;
 
-		LwXMLMutableInteger numOccurrences = new LwXMLMutableInteger(aHighNum);
+		XMLMutableInteger numOccurrences = new XMLMutableInteger(aHighNum);
 
 		findNthElementByPath(nodePath, numOccurrences);
 
@@ -858,7 +859,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nthOccurance the match of the searched-for node to be returned (null will be returned if less than n occurrences exist)
 	  * @return the found node, null if not found
 	  */
-	public Node findNthElementByPath(String nodePath, LwXMLMutableInteger nthOccurance) {
+	public Node findNthElementByPath(String nodePath, XMLMutableInteger nthOccurance) {
 		// Perform the action from the root element, if nodePath begins with a / - signifying "start at root"
 		if (nodePath != null && nodePath.length() > 0 && nodePath.startsWith("/")) {
 			return findNthElementByPath(doc.getDocumentElement(), nodePath, nthOccurance);
@@ -896,7 +897,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param nthOccurance the match of the searched-for node to be returned (null will be returned if less than n occurrences exist)
 	  * @return the found node, null if not found
 	  */
-	public Node findNthElementByPath(Node fromNode, String nodePath, LwXMLMutableInteger nthOccurance) {
+	public Node findNthElementByPath(Node fromNode, String nodePath, XMLMutableInteger nthOccurance) {
 		Node retNode = null;
 		String searchName;
 
@@ -962,7 +963,7 @@ public class LwXMLDocument implements ErrorHandler {
 	  * @param originalNodePath the path to follow to the required node, which will not be altered during processing e.g. MESSAGE/INFOSERVE/ORD/SERIAL_NO
 	  * @return the found node, null if not found
 	  */
-	public void getAllElementValuesByPath(Node fromNode, String nodePath, Vector<LwXMLTagValue> results, String originalNodePath) {
+	public void getAllElementValuesByPath(Node fromNode, String nodePath, Vector<XMLTagValue> results, String originalNodePath) {
 		String searchName;
 
 		/* Need temp path as findNthElementByPath edits the path as it goes down a branch. */
@@ -979,7 +980,7 @@ public class LwXMLDocument implements ErrorHandler {
 					if (path.length() == 0) { /* then on last (leaf) word. */
 						String foundValue =  fromNode.getTextContent();
 						if (foundValue != null) {
-							LwXMLTagValue tv = new LwXMLTagValue(originalNodePath, foundValue);
+							XMLTagValue tv = new XMLTagValue(originalNodePath, foundValue);
 							Properties attributes = getAttributeValues(fromNode);
 							if (attributes.size() > 0) {
 								tv.setAttributeSet(attributes);
@@ -1139,15 +1140,15 @@ public class LwXMLDocument implements ErrorHandler {
 	// LW 30/09/2013 - Turned off when made createDoc* static
 	//////////////////////////////////////////////////////////////////////
 	public void warning(SAXParseException e) throws SAXException {
-		throw new SAXException("LwXMLDocument: Parsing Warning encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
+		throw new SAXException("XMLDocument_old2: Parsing Warning encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
 	}
 
 	public void error(SAXParseException e) throws SAXException {
-		throw new SAXException("LwXMLDocument: Parsing Error encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
+		throw new SAXException("XMLDocument_old2: Parsing Error encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
 	}
 
 	public void fatalError(SAXParseException e) throws SAXException {
-		throw new SAXException("LwXMLDocument: Fatal Parsing Error encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
+		throw new SAXException("XMLDocument_old2: Fatal Parsing Error encountered Line " + e.getLineNumber() + " (SysID=" + e.getSystemId() + ") :" + e.getMessage());
 	}
 	//////////////////////////////////////////////////////////////////////
 	// End: SAX Error Handlers for implementing ErrorHandler interface

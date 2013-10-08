@@ -5,11 +5,11 @@ package lw.XML;
   * @author Liam Wade
   * @version 1.0 10/10/2002
   */
-public class LwXMLMutableInteger {
+public class XMLMutableInteger {
 	/**
 	   * constructor.
 	   */
-	public LwXMLMutableInteger(int i) {
+	public XMLMutableInteger(int i) {
 		this.i = i;
 	}
 

@@ -5,19 +5,19 @@ package lw.XML;
   * @author Liam Wade
   * @version 1.0 25/09/2002
   */
-public class LwXMLException extends Exception
+public class XMLException extends Exception
 {
   /**
     * Will create a new exception.
     */
-	public LwXMLException() {
+	public XMLException() {
 	}
 
   /**
     * Will create a new exception with the given reason.
 	* @param reason the text explaining the error
     */
-	public LwXMLException(String reason) {
+	public XMLException(String reason) {
 		super(reason);
 	}
 }

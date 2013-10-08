@@ -7,7 +7,7 @@ import java.util.Properties;
   * @author Liam Wade
   * @version 1.0 20/09/2002
   */
-public class LwXMLTagValue {
+public class XMLTagValue {
 	private String pathToName = null;	// the path to the TAG, including the TAG's name e.g Applic.Auditing.AuditKeys.KeyName
 	private String value = null;		// the value retrieved for the TAG
 	private Properties attributes = null;	// the list of attribute names and values for the TAG
@@ -18,7 +18,7 @@ public class LwXMLTagValue {
 	* @param pathToName the path to the TAG, including the TAG's name e.g Applic.Auditing.AuditKeys.KeyName
 	* @param the value retrieved for the TAG
     */
-	public LwXMLTagValue(String pathToName, String value) {
+	public XMLTagValue(String pathToName, String value) {
 		checkNullArgument(pathToName);
 
 		this.pathToName = pathToName;
